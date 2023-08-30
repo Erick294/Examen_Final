@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/CMakeFiles/cryptopp-cmake-populate"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/CMakeFiles/cryptopp-cmake-populate.rule"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/CMakeFiles/cryptopp-cmake-populate-complete.rule"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/cryptopp-cmake-populate-prefix/src/cryptopp-cmake-populate-stamp/cryptopp-cmake-populate-build.rule"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/cryptopp-cmake-populate-prefix/src/cryptopp-cmake-populate-stamp/cryptopp-cmake-populate-configure.rule"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/cryptopp-cmake-populate-prefix/src/cryptopp-cmake-populate-stamp/cryptopp-cmake-populate-download.rule"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/cryptopp-cmake-populate-prefix/src/cryptopp-cmake-populate-stamp/cryptopp-cmake-populate-install.rule"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/cryptopp-cmake-populate-prefix/src/cryptopp-cmake-populate-stamp/cryptopp-cmake-populate-mkdir.rule"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/cryptopp-cmake-populate-prefix/src/cryptopp-cmake-populate-stamp/cryptopp-cmake-populate-patch.rule"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/cryptopp-cmake-populate-prefix/src/cryptopp-cmake-populate-stamp/cryptopp-cmake-populate-test.rule"
+		},
+		{
+			"file" : "/workspace/Examen_Final/_deps/cryptopp-cmake-subbuild/cryptopp-cmake-populate-prefix/src/cryptopp-cmake-populate-stamp/cryptopp-cmake-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"cryptopp-cmake-populate"
+		],
+		"name" : "cryptopp-cmake-populate"
+	}
+}
