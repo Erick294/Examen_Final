@@ -28,11 +28,11 @@ static std::vector<float> multiplicar(std::vector<float> a, std::vector<float> b
     return tmp;
 }
 
-static std::vector<float> sumar(std::vector<float> resp){
+static std::vector<float> sumar(std::vector<float> resp, std::vector<float> tm){
     std::vector<float> tmp(resp.size());
 
     for(int i=0; i < resp.size(); i++){
-        tmp[i] += resp[i];
+        tmp[i] = resp[i]  + tm[i];
     }
 
     return tmp;
@@ -50,33 +50,36 @@ int main(int argc, char **argv) {
     bloque = A.size()/num_proces;
 
     MPI_Bcast(&bloque, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&B, B.size(), MPI_FLOAT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(B.data(), B.size(), MPI_FLOAT, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
+        
         for (int rank = 1; rank < num_proces; rank++) {
             MPI_Send(&A[(rank-1) * bloque], bloque, MPI_FLOAT, rank, 0, MPI_COMM_WORLD);
         }
 
-        std::vector<float> vecFinal(bloque);
+        std::vector<float> vec(A.begin() + bloque*(num_proces-1), A.end());
+        std::vector<float> vecFinal = multiplicar(vec, B);
 
         for (int rank = 1; rank < num_proces; rank++) {
             static std::vector<float> tmp(bloque);
 
-            MPI_Recv(&tmp, bloque, MPI_FLOAT, rank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-            vecFinal = sumar(tmp);
+            MPI_Recv(tmp.data(), bloque, MPI_FLOAT, rank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            vecFinal = sumar(vecFinal, tmp);
         }
 
+        std::printf("Vector Final:\n");
         for (int i = 0; i < vecFinal.size(); ++i) {
             std::printf("{%f}, ", vecFinal[i]);
         }
     } else {
         static std::vector<float> tmp(bloque);
 
-        MPI_Recv(&tmp, bloque, MPI_FLOAT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        MPI_Recv(tmp.data(), bloque, MPI_FLOAT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
         static std::vector<float> resp = multiplicar(tmp, B);
 
-        MPI_Send(&resp, bloque, MPI_FLOAT, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(resp.data(), bloque, MPI_FLOAT, 0, 0, MPI_COMM_WORLD);
     }
 
     MPI_Finalize();
