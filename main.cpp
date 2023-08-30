@@ -5,8 +5,7 @@
 #include <vector>
 
 static int rank, num_proces, bloque;
-static std::vector<float> A(4*4);
-static std::vector<float> B(4);
+static std::vector<float> A(8*8), B(8);
 
 static void llenar(){
     for(int i=0; i < A.size(); i++){
@@ -18,7 +17,7 @@ static void llenar(){
     }
 }
 
-static std:vector<float> multiplicar(std::vector<float> a, std::vector<float> b){
+static std::vector<float> multiplicar(std::vector<float> a, std::vector<float> b){
     std::vector<float> tmp(a.size());
 
     for(int i=0; i < a.size(); i++){
@@ -30,35 +29,35 @@ static std:vector<float> multiplicar(std::vector<float> a, std::vector<float> b)
 
 int main(int argc, char **argv) {
 
-    llenar();
-
     MPI_Init(&argc, &argv);
 
-    // Obtener el rank y el número de procesos
+    llenar();
+
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &num_proces);
 
-    MPI_Bcast(&B, sizeof(B), MPI_FLOAT, 0, MPI_COMM_WORLD);
+    bloque = A.size()/num_proces;
+
+    MPI_Bcast(&bloque, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&B, B.size(), MPI_FLOAT, 0, MPI_COMM_WORLD);
 
     if (rank == 0) {
-        bloque = sizeof(A)/num_proces;
-
         for (int rank = 1; rank < num_proces; rank++) {
             MPI_Send(&A[(rank-1) * bloque], bloque, MPI_FLOAT, rank, 0, MPI_COMM_WORLD);
         }
 
         for (int rank = 1; rank <num_proces; rank++) {
-            float tmp[bloque];
+            static std::vector<float> tmp(bloque);
 
             MPI_Recv(&tmp, bloque, MPI_FLOAT, rank, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         }
     } else {
-        bloque = sizeof(A) /num_proces;
-        float tmp(bloque);
+        bloque = A.size() /num_proces;
+        static std::vector<float> tmp(bloque);
 
         MPI_Recv(&tmp, bloque, MPI_FLOAT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-        float resp = tmp;
+        static std::vector<float> resp = tmp;
 
         MPI_Send(&resp, bloque, MPI_FLOAT, 0, 0, MPI_COMM_WORLD);
     }
